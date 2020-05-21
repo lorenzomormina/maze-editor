@@ -1,0 +1,3 @@
+- better scroll steps
+- red cross must be above tiles
+- dont't draw outside of view
