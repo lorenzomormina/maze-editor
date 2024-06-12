@@ -36,6 +36,7 @@ public:
 
     void Load(const std::string& filename, std::vector<MObject>& tiles)
     {
+        Clear();
         std::ifstream file(filename);
         if (!file.is_open())
             return;
