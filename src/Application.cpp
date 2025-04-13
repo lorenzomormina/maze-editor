@@ -59,17 +59,23 @@ void Application::Run()
 
 void Application::Draw()
 {
-    grid.Draw(screen);
-    maze.Draw(screen, grid);
-    if(!confPrompt.active && !filePrompt.active)
-        selectedObject.Draw(screen,grid);
-    else {
-        confPrompt.Draw(screen);
+    switch (state) {
+    case AppState::EDITOR:
+        grid.Draw(screen);
+        maze.Draw(screen, grid);
+        if (!confPrompt.active && !filePrompt.active)
+            selectedObject.Draw(screen, grid);
+        else {
+            confPrompt.Draw(screen);
+        }
+        if (filePrompt.active) {
+            filePrompt.Draw(screen);
+        }
+        toolbar.Draw(screen);
+        break;
+    case AppState::PLAYING:
+        break;
     }
-    if (filePrompt.active) {
-        filePrompt.Draw(screen);
-    }
-    toolbar.Draw(screen);
 }
 
 void Application::Stop()

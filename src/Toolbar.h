@@ -39,6 +39,7 @@ public:
     Texture fileNameTexture;
     ivec2 fileNamePos;
     RectSize fileNameSize;
+    TextButton playBtn;
 
     Toolbar(std::string& fileName) : fileName(fileName) {}
     void load(Screen& screen, TTF_Font* font);

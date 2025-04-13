@@ -25,6 +25,7 @@ public:
     bool IsPushed() const;
     void Push();
     void Unpush();
+	RectSize GetRect() const;
 
     // --
     Texture texture;

@@ -68,3 +68,8 @@ void TextButton::Unpush()
 {
     pushed = false;
 }
+
+RectSize TextButton::GetRect() const
+{
+	return rectSize;
+}

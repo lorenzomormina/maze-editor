@@ -18,49 +18,60 @@
 
 enum class ConfirmationType
 {
-    None,
-    Clear,
-    Save,
-    Load,
-    JustExit
+	None,
+	Clear,
+	Save,
+	Load,
+	JustExit
+};
+
+enum class AppState {
+	EDITOR,
+	PLAYING,
 };
 
 class Application
 {
-    SDLManager sdlManager;
-    Screen screen;
-    EventHandler eventHandler;
-    Grid grid;
-    Toolbar toolbar;
-    Maze maze;
+	SDLManager sdlManager;
+	Screen screen;
+	EventHandler eventHandler;
+	Grid grid;
+	Toolbar toolbar;
+	Maze maze;
 
-    std::vector<MObject> tiles;
-    MObject selectedObject;
-    bool running = true;
-    int fps = FPS;
+	std::vector<MObject> tiles;
+	MObject selectedObject;
+	bool running = true;
+	int fps = FPS;
 
-    void Draw();
-    void Load();
+	AppState state = AppState::EDITOR;
+
+	void Draw();
+	void Load();
 
 public:
-    Application();
-    void Run();
-    void Stop();
+	Application();
+	void Run();
+	void Stop();
 
-    void SetFPS(int fps);
-    Screen& GetScreen();
-    Grid& GetGrid();
-    Toolbar& GetToolbar();
-    MObject& GetSelectedObject();
-    std::vector<MObject>& GetTiles();
-    Maze& GetMaze();
+	void SetFPS(int fps);
+	Screen& GetScreen();
+	Grid& GetGrid();
+	Toolbar& GetToolbar();
+	MObject& GetSelectedObject();
+	std::vector<MObject>& GetTiles();
+	Maze& GetMaze();
 
-    // --
-    Font font;
-    ConfirmationPrompt confPrompt;
-    ConfirmationType confType{ ConfirmationType::None };
-    FilePrompt filePrompt;
-    std::string fileName;
+	// --
+	Font font;
+	ConfirmationPrompt confPrompt;
+	ConfirmationType confType{ ConfirmationType::None };
+	FilePrompt filePrompt;
+	std::string fileName;
+
+	// --
+	void SetState(AppState newState) { state = newState; }
+	AppState GetState() const { return state; }
 };
 
 

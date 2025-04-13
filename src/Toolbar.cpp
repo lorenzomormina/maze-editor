@@ -65,6 +65,11 @@ void Toolbar::load(Screen& screen, TTF_Font* font)
     fileNamePos.y = (32 - h) / 2;
     fileNameSize.w = w;
     fileNameSize.h = h;
+
+    playBtn = TextButton("Play", screen.GetRenderer(), Point(x, 0), font);
+    const auto playBtnWidth = playBtn.GetRect().w;
+    x = size.w - playBtnWidth - 10;
+	playBtn.SetPosition(Point(x, 0));
 }
 
 void Toolbar::Draw(Screen& screen)
@@ -85,6 +90,7 @@ void Toolbar::Draw(Screen& screen)
     loadBtn.Draw(screen);
     saveBtn.Draw(screen);
     saveAsBtn.Draw(screen);
+	playBtn.Draw(screen);
     screen.GetRenderer().DrawTexture(fileNameTexture, Rect(), Rect(fileNamePos, fileNameSize));
 }
 

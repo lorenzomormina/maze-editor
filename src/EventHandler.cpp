@@ -15,46 +15,99 @@ void EventHandler::Handle()
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
 
-        switch (event.type) {
-
-        case SDL_WINDOWEVENT:
-            switch (event.window.event) {
-
-            case SDL_WINDOWEVENT_CLOSE:
-                OnWindowClose();
-                break;
-            case SDL_WINDOWEVENT_RESIZED:
-                OnWindowResize();
-                break;
-            case SDL_WINDOWEVENT_LEAVE:
-                OnWindowLeave();
-                break;
-            default:
-                break;
-
-            }
-
-        case SDL_MOUSEBUTTONDOWN:
-            OnMouseButtonDown(event.button.button);
+        switch (app.GetState()) {
+        case AppState::EDITOR:
+			OnEditorEvents(event);
             break;
-
-        case SDL_MOUSEBUTTONUP:
-            OnMouseButtonUp(event.button.button);
+        case AppState::PLAYING:
+            OnPlayingEvents(&event);
             break;
+        }    
+    }
+}
 
-        case SDL_MOUSEWHEEL:
-            OnMouseWheel(event.wheel.y);
+// ---
+
+void EventHandler::OnPlayingEvents(SDL_Event* event)
+{
+	switch (event->type) {
+    case SDL_WINDOWEVENT:
+        switch (event->window.event) {
+
+        case SDL_WINDOWEVENT_CLOSE:
+            OnWindowClose_Playing();
             break;
-
-        case SDL_MOUSEMOTION:
-            OnMouseMotion();
+        case SDL_WINDOWEVENT_RESIZED:
+            OnWindowResize_Playing();
             break;
+        case SDL_WINDOWEVENT_LEAVE:
+            OnWindowLeave_Playing();
+            break;
+        default:
+            break;
+        }
+	}
+}
 
+void EventHandler::OnWindowClose_Playing() const
+{
+	app.Stop();
+}
+
+void EventHandler::OnWindowResize_Playing()
+{
+	
+}
+
+void EventHandler::OnWindowLeave_Playing() const
+{
+}
+
+
+// ---
+
+void EventHandler::OnEditorEvents(SDL_Event event)
+{
+    switch (event.type) {
+
+    case SDL_WINDOWEVENT:
+        switch (event.window.event) {
+
+        case SDL_WINDOWEVENT_CLOSE:
+            OnWindowClose();
+            break;
+        case SDL_WINDOWEVENT_RESIZED:
+            OnWindowResize();
+            break;
+        case SDL_WINDOWEVENT_LEAVE:
+            OnWindowLeave();
+            break;
         default:
             break;
 
         }
+
+    case SDL_MOUSEBUTTONDOWN:
+        OnMouseButtonDown(event.button.button);
+        break;
+
+    case SDL_MOUSEBUTTONUP:
+        OnMouseButtonUp(event.button.button);
+        break;
+
+    case SDL_MOUSEWHEEL:
+        OnMouseWheel(event.wheel.y);
+        break;
+
+    case SDL_MOUSEMOTION:
+        OnMouseMotion();
+        break;
+
+    default:
+        break;
+
     }
+
 }
 
 
@@ -306,6 +359,12 @@ void EventHandler::OnLeftMouseButtonDown()
                 app.filePrompt.type = FilePromptType::Load;
                 return;
             }
+
+			if (app.GetToolbar().playBtn.IsPointInside(mouseDown))
+			{
+				app.SetState(AppState::PLAYING);
+				return;
+			}
         }
         else
         {

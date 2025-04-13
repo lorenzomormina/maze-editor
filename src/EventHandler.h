@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL_hints.h>
+#include <SDL2/SDL_events.h>
 #include "Vector2.h"
 
 class Application;
@@ -29,4 +30,10 @@ protected:
     void OnLeftMouseButtonDown();
     void OnLeftMouseButtonUp() const;
     void OnWindowLeave() const;
+	void OnEditorEvents(SDL_Event event);
+	void OnPlayingEvents(SDL_Event* event);
+
+	void OnWindowClose_Playing() const;
+	void OnWindowResize_Playing();
+	void OnWindowLeave_Playing() const;
 };
