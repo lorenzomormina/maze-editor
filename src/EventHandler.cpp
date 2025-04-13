@@ -46,7 +46,35 @@ void EventHandler::OnPlayingEvents(SDL_Event* event)
         default:
             break;
         }
+    case SDL_MOUSEBUTTONDOWN:
+        OnMouseButtonDown_Playing(event->button.button);
+        break;
 	}
+}
+
+void EventHandler::OnMouseButtonDown_Playing(const Uint8 button)
+{
+	switch (button) {
+	case SDL_BUTTON_LEFT:
+		OnLeftMouseButtonDown_Playing(button);
+		break;
+	default:
+		break;
+	}
+}
+
+void EventHandler::OnLeftMouseButtonDown_Playing(const Uint8 button)
+{
+    SDL_GetMouseState(&mouseDown.x, &mouseDown.y);
+    if (app.GetPToolbar().GetRect().Contains(mouseDown)) {
+		if (app.GetPToolbar().backBtn.IsPointInside(mouseDown)) {
+			app.SetState(AppState::EDITOR);
+			return;
+		}
+        if (app.GetPToolbar().resetBtn.IsPointInside(mouseDown)) {
+            // TODO
+        }
+    }
 }
 
 void EventHandler::OnWindowClose_Playing() const

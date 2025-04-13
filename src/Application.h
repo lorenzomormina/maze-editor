@@ -14,6 +14,7 @@
 #include "Font.h"
 #include "ConfirmationPrompt.h"
 #include "FilePrompt.h"
+#include <playing/PToolbar.h>
 
 
 enum class ConfirmationType
@@ -46,6 +47,8 @@ class Application
 
 	AppState state = AppState::EDITOR;
 
+	PToolbar ptoolbar;
+
 	void Draw();
 	void Load();
 
@@ -58,6 +61,7 @@ public:
 	Screen& GetScreen();
 	Grid& GetGrid();
 	Toolbar& GetToolbar();
+	PToolbar& GetPToolbar();
 	MObject& GetSelectedObject();
 	std::vector<MObject>& GetTiles();
 	Maze& GetMaze();

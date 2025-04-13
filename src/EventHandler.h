@@ -36,4 +36,6 @@ protected:
 	void OnWindowClose_Playing() const;
 	void OnWindowResize_Playing();
 	void OnWindowLeave_Playing() const;
+    void OnMouseButtonDown_Playing(const Uint8 button);
+    void OnLeftMouseButtonDown_Playing(const Uint8 button);
 };

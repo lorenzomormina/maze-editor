@@ -16,6 +16,7 @@ Application::Application() :
     filePrompt.setRect(screen, font.font);
     Load();
     eventHandler.OnApplicationStart();
+	ptoolbar.load(screen, font.font);
 }
 
 void Application::Load()
@@ -74,6 +75,7 @@ void Application::Draw()
         toolbar.Draw(screen);
         break;
     case AppState::PLAYING:
+		ptoolbar.Draw(screen);
         break;
     }
 }
@@ -102,6 +104,11 @@ Grid& Application::GetGrid()
 Toolbar& Application::GetToolbar()
 {
     return toolbar;
+}
+
+PToolbar& Application::GetPToolbar()
+{
+	return ptoolbar;
 }
 
 MObject& Application::GetSelectedObject()
