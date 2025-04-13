@@ -14,6 +14,21 @@ void Vector2::operator+=(const Vector2& other)
     *this = *this + other;
 }
 
+Vector2 Vector2::operator*(const int other) const
+{
+	return Vector2(this->x * other, this->y * other);
+}
+
+Vector2 Vector2::operator/(const int other) const
+{
+	return Vector2(this->x / other, this->y / other);
+}
+
+Vector2 Vector2::operator-(const Vector2& other)
+{
+	return Vector2(this->x - other.x, this->y - other.y);
+}
+
 RectSize::RectSize() :
     w(0), h(0) {}
 

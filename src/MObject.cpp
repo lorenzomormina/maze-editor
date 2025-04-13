@@ -74,7 +74,7 @@ void  MObject::SwitchTo(const std::string& name, const std::vector<MObject>& mOb
 
 void MObject::DrawForPlay(Screen& screen, const Vector2& cameraOffset)
 {
-    if (id == MObjectId::NONE) return;
+    /*if (id == MObjectId::NONE) return;
 
     if (position.x == MOUSE_DRAG_UNINITIALIZED) return;
 
@@ -97,5 +97,16 @@ void MObject::DrawForPlay(Screen& screen, const Vector2& cameraOffset)
         grid.GetZoomSpriteSize(),
         grid.GetZoomSpriteSize()
     );
-    screen.GetRenderer().DrawTexture(texture, Rect(), dRect);
+    screen.GetRenderer().DrawTexture(texture, Rect(), dRect);*/
+
+    auto screenPos = (position - cameraOffset)*32 + (screen.GetWindow().GetSize()/2) - Vector2(16,16);
+	const auto dRect = Rect(
+		screenPos.x,
+		screenPos.y,
+		32,
+		32
+	);
+	screen.GetRenderer().DrawTexture(texture, Rect(), dRect);
+
+
 }

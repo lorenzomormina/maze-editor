@@ -75,8 +75,8 @@ void Application::Draw()
         toolbar.Draw(screen);
         break;
     case AppState::PLAYING:
+        playingMaze.Draw(screen);
 		ptoolbar.Draw(screen);
-		playingMaze.Draw(screen);
         break;
     }
 }

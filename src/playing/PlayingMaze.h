@@ -9,10 +9,20 @@ struct PlayingMaze {
 
 	std::vector<MObject> mobjects;
 	Vector2 cameraOffset;
-
+	MObject* player = nullptr;
 
 	void SetMaze(std::vector<MObject> tiles) {
 		mobjects = tiles;
+		auto it = std::find_if(mobjects.begin(), mobjects.end(), [](const MObject& obj) {
+			return obj.id == MObjectId::START;
+			});
+		if (it != mobjects.end()) {
+			player = &(*it);
+			cameraOffset = player->position;
+		}
+		else {
+			// TODO: what if it doesn't exist?
+		}
 	}
 
 	void Clear() {

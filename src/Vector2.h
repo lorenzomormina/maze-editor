@@ -11,6 +11,10 @@ struct Vector2
     Vector2 operator+(const Vector2& other) const;
     void operator+=(const Vector2& other);
     Vector2& operator=(const Vector2& other) = default;
+	Vector2 operator*(const int other) const;
+	Vector2 operator/(const int other) const;
+	Vector2 operator-(const Vector2& other);
+
 };
 
 typedef Vector2 Point;
@@ -68,4 +72,13 @@ struct RectSize
     RectSize();
     RectSize(int w, int h);
     RectSize& operator=(const RectSize& other) = default;
+	RectSize operator/(const int other) const
+	{
+		return RectSize(w / other, h / other);
+	}
 };
+
+inline Vector2 operator+(const Vector2& vec, const RectSize& rect)
+{
+	return Vector2(vec.x + rect.w, vec.y + rect.h);
+}
