@@ -71,3 +71,31 @@ void  MObject::SwitchTo(const std::string& name, const std::vector<MObject>& mOb
         }
     }
 }
+
+void MObject::DrawForPlay(Screen& screen, const Vector2& cameraOffset)
+{
+    if (id == MObjectId::NONE) return;
+
+    if (position.x == MOUSE_DRAG_UNINITIALIZED) return;
+
+	Grid grid(screen);
+	grid.SetOffset(cameraOffset);
+
+    const RectSize windowSize = screen.GetWindow().GetSize();
+    const auto xRight = position.x * grid.GetZoomSpriteSize() > windowSize.w - grid.GetOffset().x;
+    const auto xLeft = position.x * grid.GetZoomSpriteSize() + grid.GetOffset().x < -grid.GetZoomSpriteSize();
+    const auto yDown = position.y * grid.GetZoomSpriteSize() > windowSize.h - grid.GetOffset().y;
+    const auto yUp = position.y * grid.GetZoomSpriteSize() + grid.GetOffset().y < -grid.GetZoomSpriteSize();
+
+    if (xRight || xLeft || yDown || yUp) {
+        return;
+    }
+
+    const auto dRect = Rect(
+        position.x * grid.GetZoomSpriteSize() + grid.GetOffset().x,
+        position.y * grid.GetZoomSpriteSize() + grid.GetOffset().y,
+        grid.GetZoomSpriteSize(),
+        grid.GetZoomSpriteSize()
+    );
+    screen.GetRenderer().DrawTexture(texture, Rect(), dRect);
+}

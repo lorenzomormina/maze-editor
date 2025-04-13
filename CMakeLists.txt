@@ -3,7 +3,7 @@ project(main)
 
 file(GLOB CPP_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file(GLOB HPP_FILES ${PROJECT_SOURCE_DIR}/src/*.h)
-add_executable(main ${CPP_FILES} ${HPP_FILES} "src/Application.cpp" "src/Application.h" "src/constants.h" "src/EventHandler.cpp" "src/EventHandler.h" "src/Grid.cpp" "src/Grid.h" "src/IconButton.cpp" "src/IconButton.h" "src/main.cpp" "src/Maze.cpp" "src/Maze.h" "src/MObject.cpp" "src/MObject.h" "src/Rect.cpp" "src/Rect.h" "src/Renderer.cpp" "src/Renderer.h" "src/Screen.cpp" "src/Screen.h" "src/SDLManager.cpp" "src/SDLManager.h" "src/TextButton.cpp" "src/TextButton.h" "src/Texture.cpp" "src/Texture.h" "src/Toolbar.cpp" "src/Toolbar.h" "src/Vector2.cpp" "src/Vector2.h" "src/Window.cpp" "src/Window.h"   "src/Font.h" "src/ConfirmationPrompt.h" "src/playing/PToolbar.h" "src/playing/PToolbar.cpp")
+add_executable(main ${CPP_FILES} ${HPP_FILES} "src/Application.cpp" "src/Application.h" "src/constants.h" "src/EventHandler.cpp" "src/EventHandler.h" "src/Grid.cpp" "src/Grid.h" "src/IconButton.cpp" "src/IconButton.h" "src/main.cpp" "src/Maze.cpp" "src/Maze.h" "src/MObject.cpp" "src/MObject.h" "src/Rect.cpp" "src/Rect.h" "src/Renderer.cpp" "src/Renderer.h" "src/Screen.cpp" "src/Screen.h" "src/SDLManager.cpp" "src/SDLManager.h" "src/TextButton.cpp" "src/TextButton.h" "src/Texture.cpp" "src/Texture.h" "src/Toolbar.cpp" "src/Toolbar.h" "src/Vector2.cpp" "src/Vector2.h" "src/Window.cpp" "src/Window.h"   "src/Font.h" "src/ConfirmationPrompt.h" "src/playing/PToolbar.h" "src/playing/PToolbar.cpp" "src/playing/PlayingMaze.h")
 
 target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/src)
 

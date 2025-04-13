@@ -55,4 +55,9 @@ public:
             Put(object);
         }
     }
+
+	std::vector<MObject> GetObjects() const
+	{
+		return std::vector<MObject>(objects.begin(), objects.end());
+	}
 };

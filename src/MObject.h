@@ -35,6 +35,8 @@ struct MObject {
         // assign name base on id
         name = mObjectName[static_cast<int>(id)];
     }
+
+    void DrawForPlay(Screen& screen, const Vector2& cameraOffset);
 };
 
 MObject findMObjectByName(const std::vector<MObject>& v, const std::string& name);

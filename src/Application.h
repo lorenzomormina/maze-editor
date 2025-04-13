@@ -14,7 +14,8 @@
 #include "Font.h"
 #include "ConfirmationPrompt.h"
 #include "FilePrompt.h"
-#include <playing/PToolbar.h>
+#include "playing/PToolbar.h"
+#include "playing/PlayingMaze.h"
 
 
 enum class ConfirmationType
@@ -74,8 +75,21 @@ public:
 	std::string fileName;
 
 	// --
-	void SetState(AppState newState) { state = newState; }
+	void SetState(AppState newState) { 
+		state = newState; 
+		if (state == AppState::PLAYING)
+		{
+			playingMaze.SetMaze(maze.GetObjects());
+		}
+		else if (state == AppState::EDITOR)
+		{
+			playingMaze.Clear();
+		}
+	}
 	AppState GetState() const { return state; }
+	
+	// --
+	PlayingMaze playingMaze;
 };
 
 
