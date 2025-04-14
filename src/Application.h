@@ -32,6 +32,14 @@ enum class AppState {
 	PLAYING,
 };
 
+enum class MoveDir {
+	NONE,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 class Application
 {
 	SDLManager sdlManager;
@@ -49,6 +57,7 @@ class Application
 	AppState state = AppState::EDITOR;
 
 	PToolbar ptoolbar;
+	MoveDir moveQueue[4] = { MoveDir::NONE, MoveDir::NONE, MoveDir::NONE, MoveDir::NONE };
 
 	void Draw();
 	void Load();
@@ -75,8 +84,8 @@ public:
 	std::string fileName;
 
 	// --
-	void SetState(AppState newState) { 
-		state = newState; 
+	void SetState(AppState newState) {
+		state = newState;
 		if (state == AppState::PLAYING)
 		{
 			playingMaze.SetMaze(maze.GetObjects());
@@ -87,9 +96,17 @@ public:
 		}
 	}
 	AppState GetState() const { return state; }
-	
+
 	// --
 	PlayingMaze playingMaze;
+
+	void PushToMoveQueue(MoveDir dir);
+
+	void PopFromMoveQueue(MoveDir dir);
+
+	MoveDir GetMoveDir() {
+		return moveQueue[0];
+	}
 };
 
 

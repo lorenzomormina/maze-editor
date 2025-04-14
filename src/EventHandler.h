@@ -38,4 +38,7 @@ protected:
 	void OnWindowLeave_Playing() const;
     void OnMouseButtonDown_Playing(const Uint8 button);
     void OnLeftMouseButtonDown_Playing(const Uint8 button);
+    void OnFrameEnd();
+	void OnFrameEnd_Editor();
+	void OnFrameEnd_Playing();
 };

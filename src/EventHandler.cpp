@@ -12,6 +12,8 @@ EventHandler::EventHandler(Application& app) :
 
 void EventHandler::Handle()
 {
+    OnFrameEnd();
+
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
 
@@ -24,6 +26,16 @@ void EventHandler::Handle()
             break;
         }    
     }
+}
+
+void EventHandler::OnFrameEnd()
+{
+	if (app.GetState() == AppState::PLAYING) {
+        OnFrameEnd_Playing();
+	}
+	else if (app.GetState() == AppState::EDITOR) {
+		OnFrameEnd_Editor();
+	}
 }
 
 // ---
@@ -49,6 +61,36 @@ void EventHandler::OnPlayingEvents(SDL_Event* event)
     case SDL_MOUSEBUTTONDOWN:
         OnMouseButtonDown_Playing(event->button.button);
         break;
+    case SDL_KEYDOWN:
+        if (event->key.repeat) {
+			break;
+        }
+		if (event->key.keysym.sym == SDLK_w) {
+			this->app.PushToMoveQueue(MoveDir::UP);
+		}
+		if (event->key.keysym.sym == SDLK_s) {
+			this->app.PushToMoveQueue(MoveDir::DOWN);
+		}
+		if (event->key.keysym.sym == SDLK_a) {
+			this->app.PushToMoveQueue(MoveDir::LEFT);
+		}
+		if (event->key.keysym.sym == SDLK_d) {
+			this->app.PushToMoveQueue(MoveDir::RIGHT);
+		}
+		break;
+    case SDL_KEYUP:
+        if (event->key.keysym.sym == SDLK_w) {
+			this->app.PopFromMoveQueue(MoveDir::UP);
+        }
+		if (event->key.keysym.sym == SDLK_s) {
+			this->app.PopFromMoveQueue(MoveDir::DOWN);
+		}
+		if (event->key.keysym.sym == SDLK_a) {
+			this->app.PopFromMoveQueue(MoveDir::LEFT);
+		}
+		if (event->key.keysym.sym == SDLK_d) {
+			this->app.PopFromMoveQueue(MoveDir::RIGHT);
+		}
 	}
 }
 
@@ -89,6 +131,27 @@ void EventHandler::OnWindowResize_Playing()
 
 void EventHandler::OnWindowLeave_Playing() const
 {
+}
+
+void EventHandler::OnFrameEnd_Playing()
+{
+    auto moveDir = app.GetMoveDir();
+	if (moveDir == MoveDir::UP) {
+		app.playingMaze.MovePlayer(Vector2(0, -1));
+	}
+	else if (moveDir == MoveDir::DOWN) {
+		app.playingMaze.MovePlayer(Vector2(0, 1));
+	}
+	else if (moveDir == MoveDir::LEFT) {
+		app.playingMaze.MovePlayer(Vector2(-1, 0));
+	}
+    else if (moveDir == MoveDir::RIGHT) {
+        app.playingMaze.MovePlayer(Vector2(1, 0));
+    }
+    else {
+		app.playingMaze.MovePlayer(Vector2(0, 0));
+    }
+
 }
 
 
@@ -419,4 +482,9 @@ void EventHandler::OnLeftMouseButtonUp() const
 void EventHandler::OnWindowLeave() const
 {
     app.GetSelectedObject().position.x = MOUSE_DRAG_UNINITIALIZED;
+}
+
+void EventHandler::OnFrameEnd_Editor()
+{
+
 }

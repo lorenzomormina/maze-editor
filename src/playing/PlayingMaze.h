@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_timer.h>
 #include <vector>
 #include "MObject.h"
 #include "Vector2.h"
@@ -10,6 +11,12 @@ struct PlayingMaze {
 	std::vector<MObject> mobjects;
 	Vector2 cameraOffset;
 	MObject* player = nullptr;
+	Application* app = nullptr;
+	int lastMoveTime = 0;
+
+	void SetApp(Application& app) {
+		this->app = &app;
+	}
 
 	void SetMaze(std::vector<MObject> tiles) {
 		mobjects = tiles;
@@ -32,6 +39,15 @@ struct PlayingMaze {
 	void Draw(Screen& screen) {
 		for (auto& mobject : mobjects) {
 			mobject.DrawForPlay(screen, cameraOffset);
+		}
+	}
+
+	void MovePlayer(Vector2 moveDir) {
+		auto timeNow = SDL_GetTicks();
+		if (player && timeNow - lastMoveTime > 200) {
+			player->position += moveDir;
+			cameraOffset = player->position;
+			lastMoveTime = timeNow;
 		}
 	}
 };
