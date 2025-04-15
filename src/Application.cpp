@@ -145,7 +145,6 @@ void Application::PopFromMoveQueue(MoveDir dir)
 		if (moveQueue[i] == dir)
 		{
 			moveQueue[i] = MoveDir::NONE;
-			break;
 		}
 	}
 
