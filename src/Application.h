@@ -107,6 +107,9 @@ public:
 	MoveDir GetMoveDir() {
 		return moveQueue[0];
 	}
+
+	long moveFrames[5] = { 0, 0, 0, 0, 0 };
+	MoveDir removeDirLater = MoveDir::NONE;
 };
 
 
