@@ -128,36 +128,37 @@ Maze& Application::GetMaze()
 	return maze;
 }
 
-void Application::PushToMoveQueue(MoveDir dir)
+void Application::PushToMoveQueue(MoveDir dir, int ticks)
 {
 	for (int i = 0; i < 3; i++)
 	{
 		moveQueue[i + 1] = moveQueue[i];
 	}
-	moveQueue[0] = dir;
+	moveQueue[0] = { dir, ticks };
 }
 
-void Application::PopFromMoveQueue(MoveDir dir)
+void Application::PopFromMoveQueue(MoveDir dir, int ticks)
 {
 	// find dir in the queue
 	for (int i = 0; i < 3; i++)
 	{
-		if (moveQueue[i] == dir)
+		if (moveQueue[i].dir == dir)
 		{
-			moveQueue[i] = MoveDir::NONE;
+			moveQueue[i].dir = MoveDir::NONE;
+			moveQueue[i].ticks = 0;
 		}
 	}
 
 	// squash the queue towards the beginning
 	for (int i = 0; i < 3; i++)
 	{
-		if (moveQueue[i] == MoveDir::NONE)
+		if (moveQueue[i].dir == MoveDir::NONE)
 		{
 			for (int j = i; j < 3; j++)
 			{
 				moveQueue[j] = moveQueue[j + 1];
 			}
-			moveQueue[3] = MoveDir::NONE;
+			moveQueue[3] = { MoveDir::NONE,0 };
 			break;
 		}
 	}

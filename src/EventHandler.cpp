@@ -5,6 +5,8 @@
 #include "Application.h"
 #include "Vector2.h"
 
+#include <iostream>
+
 EventHandler::EventHandler(Application& app) :
 	app(app),
 	mouseDown(Point(-1, -1)),
@@ -43,6 +45,7 @@ void EventHandler::OnFrameEnd()
 
 void EventHandler::OnPlayingEvents(SDL_Event* event)
 {
+	auto ticks = SDL_GetTicks();
 	switch (event->type) {
 	case SDL_WINDOWEVENT:
 		switch (event->window.event) {
@@ -67,60 +70,42 @@ void EventHandler::OnPlayingEvents(SDL_Event* event)
 			break;
 		}
 		if (event->key.keysym.sym == SDLK_w) {
-			this->app.PushToMoveQueue(MoveDir::UP);
-			this->app.moveFrames[(int)MoveDir::UP] = SDL_GetTicks();
+			this->app.PushToMoveQueue(MoveDir::UP, ticks);
 		}
 		if (event->key.keysym.sym == SDLK_s) {
-			this->app.PushToMoveQueue(MoveDir::DOWN);
-			this->app.moveFrames[(int)MoveDir::DOWN] = SDL_GetTicks();
+			this->app.PushToMoveQueue(MoveDir::DOWN, ticks);
 		}
 		if (event->key.keysym.sym == SDLK_a) {
-			this->app.PushToMoveQueue(MoveDir::LEFT);
-			this->app.moveFrames[(int)MoveDir::LEFT] = SDL_GetTicks();
+			this->app.PushToMoveQueue(MoveDir::LEFT, ticks);
 		}
 		if (event->key.keysym.sym == SDLK_d) {
-			this->app.PushToMoveQueue(MoveDir::RIGHT);
-			this->app.moveFrames[(int)MoveDir::RIGHT] = SDL_GetTicks();
+			this->app.PushToMoveQueue(MoveDir::RIGHT, ticks);
 		}
 		break;
 	case SDL_KEYUP:
-
-		if (app.removeDirLater != MoveDir::NONE) {
-			this->app.PopFromMoveQueue(app.removeDirLater);
-			app.removeDirLater = MoveDir::NONE;
-		}
-
 		if (event->key.keysym.sym == SDLK_w) {
-			if (SDL_GetTicks()-app.moveFrames[(int)MoveDir::UP] < 200) {
-				app.removeDirLater = MoveDir::UP;
+			if (app.GetMoveDir() == MoveDir::UP && ticks - app.GetMoveTicks() < 200) {
+				app.tapDir = MoveDir::UP;
 			}
-			else {
-				this->app.PopFromMoveQueue(MoveDir::UP);
-			}
+			this->app.PopFromMoveQueue(MoveDir::UP, 0);
 		}
 		if (event->key.keysym.sym == SDLK_s) {
-			if (SDL_GetTicks() - app.moveFrames[(int)MoveDir::DOWN] < 200) {
-				app.removeDirLater = MoveDir::DOWN;
+			if (app.GetMoveDir() == MoveDir::DOWN && ticks - app.GetMoveTicks() < 200) {
+				app.tapDir = MoveDir::DOWN;
 			}
-			else {
-				this->app.PopFromMoveQueue(MoveDir::DOWN);
-			}
+			this->app.PopFromMoveQueue(MoveDir::DOWN, 0);
 		}
 		if (event->key.keysym.sym == SDLK_a) {
-			if (SDL_GetTicks() - app.moveFrames[(int)MoveDir::LEFT] < 200) {
-				app.removeDirLater = MoveDir::LEFT;
+			if (app.GetMoveDir() == MoveDir::LEFT && ticks - app.GetMoveTicks() < 200) {
+				app.tapDir = MoveDir::LEFT;
 			}
-			else {
-				this->app.PopFromMoveQueue(MoveDir::LEFT);
-			}
+			this->app.PopFromMoveQueue(MoveDir::LEFT, 0);
 		}
 		if (event->key.keysym.sym == SDLK_d) {
-			if (SDL_GetTicks() - app.moveFrames[(int)MoveDir::RIGHT] < 200) {
-				app.removeDirLater = MoveDir::RIGHT;
+			if (app.GetMoveDir() == MoveDir::RIGHT && ticks - app.GetMoveTicks() < 200) {
+				app.tapDir = MoveDir::RIGHT;
 			}
-			else {
-				this->app.PopFromMoveQueue(MoveDir::RIGHT);
-			}
+			this->app.PopFromMoveQueue(MoveDir::RIGHT, 0);
 		}
 	}
 }
@@ -167,17 +152,26 @@ void EventHandler::OnWindowLeave_Playing() const
 void EventHandler::OnFrameEnd_Playing()
 {
 	auto moveDir = app.GetMoveDir();
-	if (moveDir == MoveDir::UP) {
-		app.playingMaze.MovePlayer(Vector2(0, -1));
+	bool tap;
+	if (moveDir == MoveDir::UP || app.tapDir == MoveDir::UP) {
+		tap = app.tapDir == MoveDir::UP;
+		app.playingMaze.MovePlayer(Vector2(0, -1), tap);
+		app.tapDir = MoveDir::NONE;
 	}
 	else if (moveDir == MoveDir::DOWN) {
-		app.playingMaze.MovePlayer(Vector2(0, 1));
+		tap = app.tapDir == MoveDir::DOWN;
+		app.playingMaze.MovePlayer(Vector2(0, 1), tap);
+		app.tapDir = MoveDir::NONE;
 	}
 	else if (moveDir == MoveDir::LEFT) {
-		app.playingMaze.MovePlayer(Vector2(-1, 0));
+		tap = app.tapDir == MoveDir::LEFT;
+		app.playingMaze.MovePlayer(Vector2(-1, 0), tap);
+		app.tapDir = MoveDir::NONE;
 	}
 	else if (moveDir == MoveDir::RIGHT) {
-		app.playingMaze.MovePlayer(Vector2(1, 0));
+		tap = app.tapDir == MoveDir::RIGHT;
+		app.playingMaze.MovePlayer(Vector2(1, 0), tap);
+		app.tapDir = MoveDir::NONE;
 	}
 	else {
 		app.playingMaze.MovePlayer(Vector2(0, 0));

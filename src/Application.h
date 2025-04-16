@@ -40,6 +40,11 @@ enum class MoveDir {
 	RIGHT
 };
 
+struct MoveDirT {
+	MoveDir dir;
+	int ticks;
+};
+
 class Application
 {
 	SDLManager sdlManager;
@@ -57,7 +62,7 @@ class Application
 	AppState state = AppState::EDITOR;
 
 	PToolbar ptoolbar;
-	MoveDir moveQueue[4] = { MoveDir::NONE, MoveDir::NONE, MoveDir::NONE, MoveDir::NONE };
+	MoveDirT moveQueue[4] = { {MoveDir::NONE, 0},{MoveDir::NONE, 0},{MoveDir::NONE, 0},{MoveDir::NONE, 0} };
 
 	void Draw();
 	void Load();
@@ -100,12 +105,27 @@ public:
 	// --
 	PlayingMaze playingMaze;
 
-	void PushToMoveQueue(MoveDir dir);
+	void PushToMoveQueue(MoveDir dir, int ticks);
 
-	void PopFromMoveQueue(MoveDir dir);
+	void PopFromMoveQueue(MoveDir dir, int ticks);
+
+	MoveDir tapDir = MoveDir::NONE;
 
 	MoveDir GetMoveDir() {
-		return moveQueue[0];
+		return moveQueue[0].dir;
+	}
+
+	int GetMoveTicks() {
+		return moveQueue[0].ticks;
+	}
+
+	void ChangeInMoveQueue(MoveDir dir, int ticks) {
+		for (int i = 0; i < 3; i++) {
+			if (moveQueue[i].dir == dir) {
+				moveQueue[i].ticks = ticks;
+				return;
+			}
+		}
 	}
 
 	long moveFrames[5] = { 0, 0, 0, 0, 0 };

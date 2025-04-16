@@ -42,8 +42,17 @@ struct PlayingMaze {
 		}
 	}
 
-	void MovePlayer(Vector2 moveDir) {
+	void MovePlayer(Vector2 moveDir, bool tap = false) {
+
 		auto timeNow = SDL_GetTicks();
+		if (tap) {
+			player->position += moveDir;
+			cameraOffset = player->position;
+			lastMoveTime = timeNow;
+			return;
+		}
+
+		
 		if (player && timeNow - lastMoveTime > 200) {
 			player->position += moveDir;
 			cameraOffset = player->position;
