@@ -158,17 +158,17 @@ void EventHandler::OnFrameEnd_Playing()
 		app.playingMaze.MovePlayer(Vector2(0, -1), tap);
 		app.tapDir = MoveDir::NONE;
 	}
-	else if (moveDir == MoveDir::DOWN) {
+	else if (moveDir == MoveDir::DOWN || app.tapDir == MoveDir::DOWN) {
 		tap = app.tapDir == MoveDir::DOWN;
 		app.playingMaze.MovePlayer(Vector2(0, 1), tap);
 		app.tapDir = MoveDir::NONE;
 	}
-	else if (moveDir == MoveDir::LEFT) {
+	else if (moveDir == MoveDir::LEFT || app.tapDir == MoveDir::LEFT) {
 		tap = app.tapDir == MoveDir::LEFT;
 		app.playingMaze.MovePlayer(Vector2(-1, 0), tap);
 		app.tapDir = MoveDir::NONE;
 	}
-	else if (moveDir == MoveDir::RIGHT) {
+	else if (moveDir == MoveDir::RIGHT || app.tapDir == MoveDir::RIGHT) {
 		tap = app.tapDir == MoveDir::RIGHT;
 		app.playingMaze.MovePlayer(Vector2(1, 0), tap);
 		app.tapDir = MoveDir::NONE;
